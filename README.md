@@ -1,6 +1,4 @@
-Here’s a polished, natural, and slightly friendlier version of your README while keeping all technical details intact and readable:
 
----
 
 # Conversational Chatbot in Urdu
 
