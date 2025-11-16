@@ -1,21 +1,29 @@
+Here’s a polished, natural, and slightly friendlier version of your README while keeping all technical details intact and readable:
+
+---
+
 # Conversational Chatbot in Urdu
 
-This repository contains a Transformer encoder-decoder chatbot for Urdu text. The project includes model code, a trained model file, tokenizers, a Streamlit app interface, and helper scripts used for training and evaluation.
+This repository contains a **Transformer-based encoder-decoder chatbot** for Urdu text. It includes the model code, trained weights, tokenizers, a Streamlit interface, and helper scripts used for training and evaluation.
 
-## Repository structure
+---
 
-- `chatbot_app.py` — Streamlit app to run the chatbot.
-- `transformer.py` — Transformer model implementation (class `Transformer`).
-- `model_architecture.py` — auxiliary model architecture code.
-- `train_data.csv`, `val_data.csv`, `test_data.csv` — datasets (if present).
-- `best_masked_model.pt` — trained model weights used by the app.
-- `urdu_tokenizer.model`, `urdu_tokenizer.vocab` — SentencePiece tokenizer files.
-- `NLP_Chatbot.ipynb` — notebook used for experiments and development.
-- `requirements.txt` — Python dependencies (use inside a virtual environment).
+## Repository Structure
 
-## Quick start (Windows PowerShell)
+* `chatbot_app.py` — Streamlit app to run the chatbot interactively.
+* `transformer.py` — Transformer model implementation (`Transformer` class).
+* `model_architecture.py` — Supporting architecture code for the model.
+* `train_data.csv`, `val_data.csv`, `test_data.csv` — Dataset files (if included).
+* `best_masked_model.pt` — Pre-trained model weights used by the app.
+* `urdu_tokenizer.model`, `urdu_tokenizer.vocab` — SentencePiece tokenizer files.
+* `NLP_Chatbot.ipynb` — Notebook for experiments and model development.
+* `requirements.txt` — Python dependencies (use inside a virtual environment).
 
-1. Create and activate a virtual environment (recommended):
+---
+
+## Quick Start (Windows PowerShell)
+
+1. **Create and activate a virtual environment** (recommended):
 
 ```powershell
 python -m venv .venv
@@ -23,83 +31,95 @@ python -m venv .venv
 python -m pip install --upgrade pip
 ```
 
-2. Install project dependencies:
+2. **Install dependencies**:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-3. If you encounter PyTorch DLL / initialization errors (see Troubleshooting), install the CPU-only PyTorch wheel as a quick workaround:
+3. **Optional: Fix PyTorch DLL / initialization errors**:
+
+If you run into errors (like `WinError 1114`) when importing PyTorch, install the CPU-only version:
 
 ```powershell
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
-4. Run the Streamlit app:
+4. **Run the Streamlit app**:
 
 ```powershell
 streamlit run chatbot_app.py
 ```
 
-Open the URL Streamlit prints (usually `http://localhost:8501`).
+Open the URL printed by Streamlit (usually `http://localhost:8501`) in your browser.
 
-## Running the notebook
+---
 
-Open `NLP_Chatbot.ipynb` in Jupyter or VS Code's notebook UI. Activate the same virtual environment so the notebook uses the same dependencies.
+## Running the Notebook
 
-## Model / Tokenizer
+Open `NLP_Chatbot.ipynb` in Jupyter or VS Code. Make sure to activate the same virtual environment so all dependencies match.
 
-- The app expects `best_masked_model.pt` and `urdu_tokenizer.model` in the repository root.
-- The model class is `Transformer` defined in `transformer.py`. The Streamlit app instantiates it with:
+---
+
+## Model & Tokenizer
+
+* The app expects `best_masked_model.pt` and `urdu_tokenizer.model` in the repository root.
+* The model class `Transformer` is defined in `transformer.py`. Example usage:
 
 ```python
 from transformer import Transformer
 model = Transformer(vocab_size=sp.vocab_size())
 ```
 
+---
+
 ## Troubleshooting
 
-- Symptom: OSError WinError 1114 when importing `torch` (DLL initialization failed; message references `c10.dll`).
-  - Cause: Native PyTorch binaries depend on system libraries, GPU drivers, and a matching Python/CUDA configuration. This is an environment issue — not a Python code bug.
-  - Quick fixes:
-    - If you do not need GPU acceleration, install the CPU-only PyTorch wheel:
+**Problem:** `OSError WinError 1114` when importing `torch` (DLL initialization failed).
+**Cause:** Environment mismatch (Python version, GPU drivers, CUDA, or missing system libraries).
 
-      ```powershell
-      pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-      ```
+**Quick fixes:**
 
-    - If you need GPU support:
-      1. Check your Python version (`python --version`). Many PyTorch Windows wheels officially support specific Python versions (commonly 3.8–3.11). If you are on Python 3.12/3.13, install a supported Python and create a virtualenv with it.
-      2. Run `nvidia-smi` to check your NVIDIA driver and CUDA compatibility (if you have an NVIDIA GPU).
-      3. Reinstall PyTorch matching your CUDA driver version. Use the PyTorch install selector at https://pytorch.org/get-started/locally/ to get the correct pip command.
-      4. Ensure the Microsoft Visual C++ Redistributable is installed (2015-2022).
+* **CPU-only PyTorch** (recommended if GPU not needed):
 
-- Additional checks:
-  - Run a minimal test in PowerShell to reproduce the import error:
+```powershell
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
 
-    ```powershell
-    python -c "import torch; print(torch.__version__)"
-    ```
+* **GPU support**:
 
-  - If the command raises the same `OSError`, follow the above environment steps.
+  1. Ensure your Python version is supported by PyTorch (commonly 3.8–3.11).
+  2. Check NVIDIA driver and CUDA version (`nvidia-smi`).
+  3. Reinstall PyTorch matching your CUDA driver: [PyTorch Install Guide](https://pytorch.org/get-started/locally/).
+  4. Install Microsoft Visual C++ Redistributable (2015–2022).
 
-## Notes & tips
+**Check installation:**
 
-- The Streamlit app performs model loading on startup. If you want more graceful error messages for missing or broken PyTorch installs, consider editing `chatbot_app.py` to import `torch` and load the model inside a `try/except` block and show a helpful Streamlit error message.
-- Keep the `urdu_tokenizer.model` file and the `best_masked_model.pt` next to `chatbot_app.py` for the app to find them by relative path.
+```powershell
+python -c "import torch; print(torch.__version__)"
+```
 
-## Contact
+If it fails, follow the environment fixes above.
 
-If you need additional help reproducing or fixing environment issues, provide the output of:
+---
+
+## Notes & Tips
+
+* Keep `urdu_tokenizer.model` and `best_masked_model.pt` next to `chatbot_app.py` so the app can locate them.
+* For friendlier error messages in the Streamlit app, wrap the model loading code in a `try/except` block.
+
+---
+
+## Contact / Support
+
+If you need help fixing environment issues, provide the following info:
 
 ```powershell
 python --version
-python -c "import torch; print(torch.__version__)"  # if it imports
+python -c "import torch; print(torch.__version__)"
 nvidia-smi  # if you have an NVIDIA GPU
 ```
 
-and I can suggest the exact PyTorch wheel/commands to install.
+With this info, you can get the exact PyTorch wheel or commands for your setup.
 
-## License
 
-Add your preferred license here (e.g., MIT) or remove this section.
